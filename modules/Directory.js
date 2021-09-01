@@ -1,13 +1,9 @@
-
-
 /**
 * 目录工具。
 */
+
 const fs = require('fs');
 const Path = require('@definejs/path');
-
-//为了避免发生循环加载，这里先不加载，到调用时再加载。
-// const File = require('@definejs/file'); 
 
 
 //静态方法
@@ -187,22 +183,25 @@ module.exports = exports = {
         destDir = Path.normalizeDir(destDir);
         exports.create(destDir);
 
-        let File = require('@definejs/file'); //调用时再加载，是为了避免循环加载。
+       
         let list = fs.readdirSync(srcDir);
 
         list.forEach(function (item) {
             let src = Path.join(srcDir, item);
             let dest = Path.join(destDir, item);
-
             let stat = fs.statSync(src);
-            let isFile = !stat.isDirectory();
 
-            if (isFile) {
-                File.copy(src, dest);
-            }
-            else {
+            //是一个目录，递归处理。
+            if (stat.isDirectory()) {
                 exports.copy(src, dest);
+                return;
             }
+
+            //是一个文件。
+            let buffers = fs.readFileSync(src);//读到的是 buffer。
+
+            exports.create(dest); //先创建目录。
+            fs.writeFileSync(dest, buffers);
 
         });
 
