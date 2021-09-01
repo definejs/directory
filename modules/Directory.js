@@ -4,7 +4,6 @@
 * 目录工具。
 */
 const fs = require('fs');
-const path = require('path');
 const Path = require('@definejs/path');
 
 //为了避免发生循环加载，这里先不加载，到调用时再加载。
