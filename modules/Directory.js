@@ -138,8 +138,6 @@ module.exports = exports = {
                 fs.unlinkSync(file); //删除文件。
             });
 
-            console.log(cwd, dir);
-
             if (cwd != dir) {
                 fs.rmdirSync(cwd);
             }
