@@ -30,10 +30,12 @@ module.exports = exports = {
             let isDir = stat.isDirectory();
 
             if (isDir) {
+                item = Path.normalizeDir(item);
                 dirs.push(item);
                 exports.each(item, fn);
             }
             else {
+                item = Path.normalize(item);
                 files.push(item);
             }
         });
